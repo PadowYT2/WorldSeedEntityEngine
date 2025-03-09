@@ -12,6 +12,7 @@ import net.minestom.server.instance.Instance;
 import net.minestom.server.item.ItemComponent;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
+import net.minestom.server.item.component.CustomModelData;
 import net.minestom.server.item.component.HeadProfile;
 import net.worldseed.multipart.GenericModel;
 import net.worldseed.multipart.Quaternion;
@@ -22,6 +23,7 @@ import net.worldseed.multipart.model_bones.ModelBoneViewable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -132,18 +134,25 @@ public class ModelBoneEmote extends ModelBoneImpl implements ModelBoneViewable {
         return Vec.ONE;
     }
 
-    private int customModelDataFromName(String name) {
-        return switch (name) {
-            case "Head" -> 1;
-            case "RightArm" -> 2;
-            case "LeftArm" -> 3;
-            case "Body" -> 4;
-            case "RightLeg" -> 5;
-            case "LeftLeg" -> 6;
-            case "slim_right" -> 7;
-            case "slim_left" -> 8;
-            default -> 0;
+    private CustomModelData customModelDataFromName(String name) {
+        float floatData = switch (name) {
+            case "Head" -> 1.0f;
+            case "RightArm" -> 2.0f;
+            case "LeftArm" -> 3.0f;
+            case "Body" -> 4.0f;
+            case "RightLeg" -> 5.0f;
+            case "LeftLeg" -> 6.0f;
+            case "slim_right" -> 7.0f;
+            case "slim_left" -> 8.0f;
+            default -> 0.0f;
         };
+
+        List<Float> floats = Collections.singletonList(floatData);
+        List<Boolean> flags = Collections.emptyList();
+        List<String> strings = Collections.emptyList();
+        List<RGBLike> colors = Collections.emptyList();
+
+        return new CustomModelData(floats, flags, strings, colors);
     }
 
     @Override

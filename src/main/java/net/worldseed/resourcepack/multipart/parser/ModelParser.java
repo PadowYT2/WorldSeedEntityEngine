@@ -433,7 +433,7 @@ public class ModelParser {
         JsonObjectBuilder res = Json.createObjectBuilder();
 
         JsonObjectBuilder customModelData = Json.createObjectBuilder();
-        customModelData.add("custom_model_data", id);
+        customModelData.add("custom_model_data", (float) id);
 
         res.add("predicate", customModelData);
         res.add("model", "worldseed:mobs/" + name + "/" + state + "/" + bone);

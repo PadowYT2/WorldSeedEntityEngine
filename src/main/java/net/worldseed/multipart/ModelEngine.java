@@ -1,6 +1,8 @@
 package net.worldseed.multipart;
 
 import com.google.gson.*;
+
+import net.kyori.adventure.util.RGBLike;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Pos;
@@ -15,6 +17,7 @@ import net.minestom.server.event.player.PlayerPacketEvent;
 import net.minestom.server.item.ItemComponent;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
+import net.minestom.server.item.component.CustomModelData;
 import net.minestom.server.network.packet.client.play.ClientInputPacket;
 import net.worldseed.multipart.events.ModelControlEvent;
 import net.worldseed.multipart.events.ModelDamageEvent;
@@ -26,7 +29,9 @@ import javax.json.JsonNumber;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 public class ModelEngine {
@@ -96,9 +101,20 @@ public class ModelEngine {
         });
     }
 
-    private static ItemStack generateBoneItem(int model_id) {
-        return ItemStack.builder(modelMaterial).set(ItemComponent.CUSTOM_MODEL_DATA, model_id).build();
+    private static CustomModelData customModelDataFromId(int model_id) {
+        List<Float> floats = Collections.singletonList((float) model_id);
+        List<Boolean> flags = Collections.emptyList();
+        List<String> strings = Collections.emptyList();
+        List<RGBLike> colors = Collections.emptyList();
+
+        return new CustomModelData(floats, flags, strings, colors);
     }
+
+    private static ItemStack generateBoneItem(int model_id) {
+        return ItemStack.builder(modelMaterial)
+                .set(ItemComponent.CUSTOM_MODEL_DATA, customModelDataFromId(model_id))
+                .build();
+    }    
 
     public static HashMap<String, ItemStack> getItems(String model, String name) {
         return blockMappings.get(model + "/" + name);
